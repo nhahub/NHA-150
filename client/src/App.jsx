@@ -1,0 +1,100 @@
+import HomePage from "./routes/homePage/homePage";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import ListPage from "./routes/listPage/listPage";
+import {Layout, RequiredAuth } from "./routes/layout/layout";
+import SinglePage from "./routes/singlePage/singlePage";
+import ProfilePage from "./routes/profilePage/profilePage";
+import Login from "./routes/login/login";
+import Register from "./routes/register/register";
+import ProfileUpdatePage from './routes/profileUpdatePage/profileUpdatePage';
+import NewPostPage from "./routes/newPostPage/newPostPage";
+import EditPostPage from "./routes/editPostPage/editPostPage";
+import AboutPage from "./routes/aboutPage/aboutPage";
+import ContactPage from "./routes/contactPage/contactPage";
+import AgentsPage from "./routes/agentsPage/agentsPage";
+import { listPageLoader, singlePageLoader, profilePageLoader, agentsPageLoader } from './lib/loaders';
+
+function App() {
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Layout />,
+      children:[
+        {
+          path:"/",
+          element:<HomePage/>
+        },
+        {
+          path:"/list",
+          element:<ListPage/>,
+          loader:listPageLoader,
+        },
+        {
+          path:"/:id",
+          element:<SinglePage/>,
+          loader:singlePageLoader,
+
+        },
+        {
+          path:"/about",
+          element:<AboutPage/>
+        },
+        {
+          path:"/contact",
+          element:<ContactPage/>
+        },
+        {
+          path:"/agents",
+          element:<AgentsPage/>,
+          loader:agentsPageLoader,
+        },
+        {
+          path:"/login",
+          element:<Login/>
+        },
+        {
+          path:"/register",
+          element:<Register/>
+        }
+      ],
+
+    },
+    {
+      
+      path: "/",
+      element: <RequiredAuth />,
+      children:[
+        
+        {
+          path:"/profile",
+          element:<ProfilePage/>,
+          loader:profilePageLoader,
+        },
+        {
+          path:"/profile/update",
+          element:<ProfileUpdatePage/>
+        },
+        {
+          path:"/add",
+          element:<NewPostPage/>
+        },
+        {
+          path:"/edit/:id",
+          element:<EditPostPage/>,
+          loader:singlePageLoader,
+        }
+
+      ]
+    }
+  ]);
+
+  return (
+
+    <RouterProvider router={router}/>
+  );
+}
+
+export default App;

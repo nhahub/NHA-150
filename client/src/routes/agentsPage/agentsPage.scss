@@ -1,0 +1,356 @@
+@import "../../responsive.scss";
+
+.agentsPage {
+  padding: 0;
+  min-height: calc(100vh - 100px);
+  overflow-x: hidden;
+  
+  .hero {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: var(--text-inverse);
+    padding: 100px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 0;
+    
+    &::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: pulse 20s infinite;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .title {
+      font-size: 56px;
+      font-weight: 900;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+      animation: fadeInUp 0.8s ease-out;
+      
+      @include md {
+        font-size: 42px;
+      }
+      
+      @include sm {
+        font-size: 32px;
+      }
+    }
+    
+    .subtitle {
+      font-size: 26px;
+      margin-bottom: 30px;
+      opacity: 0.95;
+      font-weight: 300;
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+      
+      @include sm {
+        font-size: 20px;
+      }
+    }
+    
+    .description {
+      font-size: 18px;
+      line-height: 1.8;
+      opacity: 0.9;
+      animation: fadeInUp 0.8s ease-out 0.4s both;
+      
+      @include sm {
+        font-size: 16px;
+      }
+    }
+  }
+  
+  .content {
+    padding: 80px 20px;
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 80px 20px;
+      font-size: 20px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      
+      &::after {
+        content: "...";
+        animation: dots 1.5s infinite;
+      }
+    }
+
+    .noAgents {
+      text-align: center;
+      padding: 80px 20px;
+      font-size: 18px;
+      color: var(--text-secondary);
+      background: var(--bg-secondary);
+      border-radius: 20px;
+      border: 2px solid var(--border-color);
+    }
+
+    .agentsGrid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 35px;
+      
+      @include lg {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+      }
+      
+      @include sm {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+      
+      .agentCard {
+        background: var(--bg-secondary);
+        border-radius: 24px;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: 2px solid transparent;
+        position: relative;
+        opacity: 0;
+        animation: fadeInUp 0.6s ease-out forwards;
+        
+        @for $i from 1 through 6 {
+          &:nth-child(#{$i}) {
+            animation-delay: #{$i * 0.1}s;
+          }
+        }
+        
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(135deg, var(--primary-color)10, transparent);
+          opacity: 0;
+          transition: opacity 0.4s ease;
+          z-index: 0;
+        }
+        
+        &:hover {
+          transform: translateY(-12px) scale(1.02);
+          box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+          border-color: var(--primary-color);
+          
+          &::before {
+            opacity: 1;
+          }
+          
+          .agentImage {
+            img {
+              transform: scale(1.15);
+            }
+            
+            &::after {
+              opacity: 1;
+            }
+          }
+          
+          .viewProfileBtn {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+        
+        .agentImage {
+          width: 100%;
+          height: 280px;
+          overflow: hidden;
+          background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+          position: relative;
+          
+          &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+          }
+          
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          }
+        }
+        
+        .agentInfo {
+          padding: 35px;
+          position: relative;
+          z-index: 1;
+          
+          h2 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--text-primary);
+            text-align: center;
+          }
+          
+          .agentStats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 25px;
+            padding: 25px 0;
+            border-top: 2px solid var(--border-color);
+            border-bottom: 2px solid var(--border-color);
+            
+            .stat {
+              text-align: center;
+              
+              .statValue {
+                display: block;
+                font-size: 32px;
+                font-weight: 900;
+                color: var(--primary-color);
+                margin-bottom: 8px;
+                line-height: 1;
+              }
+              
+              .statLabel {
+                display: block;
+                font-size: 14px;
+                font-weight: 600;
+                color: var(--text-secondary);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+              }
+            }
+          }
+          
+          .agentDetails {
+            margin-bottom: 25px;
+            
+            .detailItem {
+              display: flex;
+              flex-direction: column;
+              margin-bottom: 18px;
+              
+              &:last-child {
+                margin-bottom: 0;
+              }
+              
+              strong {
+                font-size: 13px;
+                font-weight: 700;
+                color: var(--text-primary);
+                margin-bottom: 6px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+              }
+              
+              span {
+                font-size: 15px;
+                color: var(--text-secondary);
+                line-height: 1.6;
+              }
+            }
+          }
+          
+          .viewProfileBtn {
+            width: 100%;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-inverse);
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(254, 206, 81, 0.3);
+            position: relative;
+            overflow: hidden;
+            
+            &::before {
+              content: "";
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              width: 0;
+              height: 0;
+              border-radius: 50%;
+              background: rgba(255, 255, 255, 0.3);
+              transform: translate(-50%, -50%);
+              transition: width 0.6s, height 0.6s;
+            }
+            
+            &:hover {
+              transform: translateY(-3px);
+              box-shadow: 0 8px 25px rgba(254, 206, 81, 0.4);
+              
+              &::before {
+                width: 300px;
+                height: 300px;
+              }
+            }
+            
+            &:active {
+              transform: translateY(-1px);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes dots {
+  0%, 20% {
+    content: ".";
+  }
+  40% {
+    content: "..";
+  }
+  60%, 100% {
+    content: "...";
+  }
+}
+
