@@ -9,10 +9,10 @@ import UploadWidget from "../../components/uploadWidget/uploadWidget";
 
 
 function ProfileUpdatePage() {
-  const { currentUser, updateUser } = useContext(AuthContext);
-  const [err, setErr] = useState("");
-  const [avatar, setAvatar] = useState([]);
-  const navigate = useNavigate();
+  const { currentUser, updateUser } = useContext(AuthContext); // Get current user and update function from AuthContext
+  const [err, setErr] = useState(""); // State to manage error messages
+  const [avatar, setAvatar] = useState([]); // State to manage avatar upload
+  const navigate = useNavigate(); // Hook to navigate programmatically
 
   const handlesubmit = async (e) => {
     e.preventDefault();
@@ -23,7 +23,7 @@ function ProfileUpdatePage() {
     if (!currentUser || !currentUser.id) {
       setErr("You must be logged in to update your profile.");
       return;
-    }
+    } // Ensure user is logged in
 
     try {
       const res = await apiRequest.put(`/users/${currentUser.id}`, {
@@ -40,7 +40,7 @@ function ProfileUpdatePage() {
       const msg = err?.response?.data?.message || err?.message || "Update failed";
       setErr(msg);
     }
-  };
+  }; // Function to handle form submission
   return (
     <div className="profileUpdatePage">
       <div className="formContainer">

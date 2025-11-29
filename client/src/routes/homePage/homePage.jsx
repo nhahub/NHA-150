@@ -7,8 +7,8 @@ import { LanguageContext } from "../../../context/languageContext";
 function 
 HomePage() {
 
-  const {currentUser}=useContext(AuthContext);
-  const {t}=useContext(LanguageContext);
+  const {currentUser}=useContext(AuthContext); // AuthContext shares global data for Auth
+  const {t}=useContext(LanguageContext); // Context holds global data for Language
   console.log("currentUser in home page:",currentUser);
 
   return (

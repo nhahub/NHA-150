@@ -163,6 +163,10 @@
       min-width: 0;
     }
 
+    @include sm {
+      display: none; /* hide homepage image completely on small screens */
+    }
+
     img {
       display: block;
       width: 100%;

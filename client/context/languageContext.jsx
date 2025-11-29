@@ -1,7 +1,11 @@
+// this file manages language context for the application
+// imports
 import { createContext, useState, useEffect } from "react";
 
+// create LanguageContext
 export const LanguageContext = createContext(null);
 
+// translation data for supported languages
 const translations = {
   en: {
     // Navigation
@@ -323,6 +327,7 @@ const translations = {
   }
 };
 
+// component to wrap around parts of the app that need language context
 export const LanguageContextProvider = ({ children }) => {
   const getInitialLanguage = () => {
     try {
@@ -333,8 +338,10 @@ export const LanguageContextProvider = ({ children }) => {
     }
   };
 
+  // state to hold current language
   const [language, setLanguage] = useState(getInitialLanguage);
 
+  // effect to set initial language direction and lang attribute
   useEffect(() => {
     const initialLang = getInitialLanguage();
     try {
@@ -345,6 +352,7 @@ export const LanguageContextProvider = ({ children }) => {
     }
   }, []);
 
+  // effect to update localStorage and document attributes on language change
   useEffect(() => {
     try {
       localStorage.setItem("language", language);
@@ -364,6 +372,8 @@ export const LanguageContextProvider = ({ children }) => {
   };
 
   return (
+    
+    // provide language state, toggle function, and translation function to children components
     <LanguageContext.Provider value={{ language, setLanguage, toggleLanguage, t }}>
       {children}
     </LanguageContext.Provider>

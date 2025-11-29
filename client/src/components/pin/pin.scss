@@ -25,7 +25,7 @@
 
     a{
       font-weight: 600;
-      color: #111;
+      color: var(--text-primary);
       text-decoration: none;
       white-space: nowrap;
       overflow: hidden;
@@ -34,17 +34,17 @@
       max-width: 100%;
     }
     a:hover{
-      color: #0b74de;
+      color: var(--accent);
       text-decoration: underline;
     }
 
     span{
-      color: #666;
+      color: var(--text-secondary);
       font-size: 12px;
     }
 
     b{
-      color: #0b74de;
+      color: var(--accent);
       font-size: 14px;
     }
   }
@@ -57,4 +57,22 @@
 
 .leaflet-popup-content {
   padding: 6px 8px !important;
+  /* Ensure popup background and text color follow app theme so text is visible
+     in both light and dark modes. Some themes set text color to light which
+     can be invisible on Leaflet's default white popup — enforce variables. */
+  background: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Make sure links inside popups are visible by default (not just on hover) */
+.leaflet-popup-content a{
+  color: var(--text-primary) !important;
+  opacity: 1 !important;
+  text-decoration: none !important;
+}
+
+/* Popup tip (the small caret) should match popup background */
+.leaflet-popup-tip,
+.leaflet-container .leaflet-popup-content-wrapper {
+  background: var(--bg-primary) !important;
 }

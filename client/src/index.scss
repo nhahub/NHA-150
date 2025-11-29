@@ -17,14 +17,27 @@ a {
 :root {
   // Light mode colors
   --bg-primary: #ffffff;
+  /* Navbar height used for fixed positioning padding */
+  --nav-height: 100px;
   --bg-secondary: #fcf5f3;
   --text-primary: #333333;
   --text-secondary: #666666;
   --text-inverse: #ffffff;
   --primary-color: #fece51;
   --secondary-color: #f37335;
+  /* Semantic colors */
+  --danger: #e74c3c;
+  --danger-dark: #c0392b;
+  --danger-rgb: 231, 76, 60;
+  --info: #3498db;
+  --info-dark: #2980b9;
+  --accent: #0b74de;
+  --success: #34A853;
+  --muted: #666666;
   --border-color: #e0e0e0;
   --icon-filter: none;
+  /* Navbar scrolled background (light mode) */
+  --nav-bg-scrolled: rgba(255, 255, 255, 0.95);
 }
 
 .dark {
@@ -36,8 +49,15 @@ a {
   --text-inverse: #1a1a1a;
   --primary-color: #fece51;
   --secondary-color: #f37335;
+  --primary-rgb: 254, 206, 81;
+  --secondary-rgb: 243, 115, 53;
   --border-color: #404040;
+  --danger-rgb: 231, 76, 60;
+  --primary-rgb: 254, 206, 81;
+  --secondary-rgb: 243, 115, 53;
   --icon-filter: invert(1);
+  /* Navbar scrolled background (dark mode) */
+  --nav-bg-scrolled: rgba(17, 24, 39, 0.6);
 }
 
 body{
@@ -53,6 +73,8 @@ html {
   scroll-behavior: smooth;
   width: 100%;
   max-width: 100%;
+  /* Avoid browser autoscroll bringing focused elements underneath the fixed navbar */
+  scroll-padding-top: var(--nav-height);
 }
 
 body {

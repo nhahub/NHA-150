@@ -498,14 +498,14 @@
 
         .errorMessage {
           grid-column: 1 / -1;
-          color: #e74c3c;
+          color: var(--danger);
           font-weight: 600;
           padding: 16px 20px;
-          background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(231, 76, 60, 0.05));
+          background: linear-gradient(135deg, rgba(var(--danger-rgb), 0.1), rgba(var(--danger-rgb), 0.05));
           border-radius: 12px;
-          border-left: 5px solid #e74c3c;
+          border-left: 5px solid var(--danger);
           font-size: 15px;
-          box-shadow: 0 2px 8px rgba(231, 76, 60, 0.15);
+          box-shadow: 0 2px 8px rgba(var(--danger-rgb), 0.15);
           display: flex;
           align-items: center;
           gap: 10px;

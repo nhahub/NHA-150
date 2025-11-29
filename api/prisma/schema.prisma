@@ -1,14 +1,16 @@
-
+// Prisma schema file defining the database models and relations
+// generator configuration for Prisma Client
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
 }
 
+// MongoDB datasource configuration
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
-
+// user model representing application users
 model User {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   username  String   @unique
@@ -22,6 +24,7 @@ model User {
   chatIDs    String[]    @db.ObjectId
 }
 
+// post model representing real estate listings
 model Post {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   title  String   
@@ -42,11 +45,13 @@ model Post {
   savedPosts SavedPost[]
 }
 
+// enums for transaction type
 enum Type{
   rent
   buy
 }
 
+// enums for property type 
 enum Property{
   house
   apartment
@@ -56,7 +61,7 @@ enum Property{
 }
 
 
-
+// detailed information for each post
 model PostDetail {
   id         String  @id @default(auto()) @map("_id") @db.ObjectId
   desc       String
@@ -71,6 +76,7 @@ model PostDetail {
   postId     String  @unique @db.ObjectId
 }
 
+// saved posts model
 model SavedPost {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   user      User     @relation(fields: [userId], references: [id])
@@ -82,6 +88,7 @@ model SavedPost {
   @@unique([userId, postId])
 }
 
+// chat model representing conversations between users
 model Chat {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   users     User[]    @relation(fields: [userIDs], references: [id])
@@ -92,6 +99,7 @@ model Chat {
   lastMessage String?
 }
 
+// message model representing individual messages in a chat
 model Message {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   text      String

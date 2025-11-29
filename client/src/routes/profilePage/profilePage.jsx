@@ -8,20 +8,29 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from './../../../context/authContext';
 import { LanguageContext } from '../../../context/languageContext';
 import { Suspense } from "react";
+import { SpinnerDotted } from 'spinners-react';
 
 
 function ProfilePage() {
-  const data=useLoaderData();
-  const location = useLocation();
-  const initialOpenChatId = location.state?.openChatId;
-  const initialOpenReceiverId = location.state?.openReceiverId;
-  const revalidator = useRevalidator();
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const unreadNumber = useNotificationStore((s) => s.number);
-  const fetchUnread = useNotificationStore((s) => s.fetch);
+  const data = useLoaderData(); //{postResponse} ,chatResponse
+  
+  const location = useLocation(); // To get state passed via navigation
 
-  const {currentUser,updateUser}=useContext(AuthContext);
-  const {t}=useContext(LanguageContext);
+  const initialOpenChatId = location.state?.openChatId; // Get the chat ID to open from navigation state
+
+  const initialOpenReceiverId = location.state?.openReceiverId; // Get the receiver ID to open from navigation state
+
+  const revalidator = useRevalidator(); // To revalidate data after actions like delete or save
+
+  const [isChatOpen, setIsChatOpen] = useState(false); // State to manage chat widget visibility
+
+  const unreadNumber = useNotificationStore((s) => s.number); // Get unread notification count
+
+  const fetchUnread = useNotificationStore((s) => s.fetch); // Function to fetch unread notifications
+
+  const { currentUser, updateUser } = useContext(AuthContext); // Get current user and update function from AuthContext
+  
+  const {t}=useContext(LanguageContext); // Get translation function from LanguageContext
   const navigate=useNavigate();
 
   const handleDelete = (postId) => {
@@ -40,21 +49,21 @@ function ProfilePage() {
     }catch(err){
       console.log(err);
     }
-  }
+  } 
 
   useEffect(() => {
     if (initialOpenChatId && initialOpenReceiverId) {
       setIsChatOpen(true);
     }
-  }, [initialOpenChatId, initialOpenReceiverId]);
+  }, [initialOpenChatId, initialOpenReceiverId]); // Open chat widget if initial chat IDs are provided
 
 
   useEffect(() => {
     fetchUnread();
-  }, []);
+  }, []); // Fetch unread notifications on component mount
 
   
-
+  
   return (
     <div className="profilePage">
       <div className="profileHero">
@@ -127,7 +136,7 @@ function ProfilePage() {
               </Link>
             </div>
             <div className="sectionBody">
-              <Suspense fallback={<div className="loadingState">{t("loadingPosts")}</div>}>
+              <Suspense fallback={<div className="loadingState"><SpinnerDotted  size={50}  thickness={150} speed={200} color="#F5803C"/></div>}>
                 <Await resolve={data.postResponse} errorElement={<p className="errorState">{t("errorLoadingPosts")}</p>}>
                   {(postResponse) => (
                     postResponse?.data.userPosts?.length > 0 ? (
@@ -155,7 +164,7 @@ function ProfilePage() {
               </h2>
             </div>
             <div className="sectionBody">
-              <Suspense fallback={<div className="loadingState">{t("loadingPosts")}</div>}>
+              <Suspense fallback={<div className="loadingState"><SpinnerDotted  size={50}  thickness={150} speed={200} color="#F5803C"/></div>}>
                 <Await resolve={data.postResponse} errorElement={<p className="errorState">{t("errorLoadingPosts")}</p>}>
                   {(postResponse) => (
                     postResponse?.data.savedPosts?.length > 0 ? (
@@ -173,7 +182,6 @@ function ProfilePage() {
           </div>
         </div>
       </div>
-
 
       <div className={`chatWidget ${isChatOpen ? 'open' : ''}`}>
         <div className="chatToggle" onClick={() => setIsChatOpen(!isChatOpen)}>
@@ -198,6 +206,7 @@ function ProfilePage() {
       </div>
     </div>
   );
+  
 }
 
 export default ProfilePage;

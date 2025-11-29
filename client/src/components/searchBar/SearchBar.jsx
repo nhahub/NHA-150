@@ -7,6 +7,8 @@ const types = ["any", "buy", "rent"];
 
 function SearchBar() {
   const { t } = useContext(LanguageContext);
+  
+  // Track all search parameters in a single state object
   const [query, setQuery] = useState({
     type: "any",
     city: "",
@@ -14,16 +16,22 @@ function SearchBar() {
     maxPrice: "",
   });
 
+  // Update property type when user clicks type buttons
   const switchType = (val) => {
     setQuery((prev) => ({ ...prev, type: val }));
   };
 
+  // Handle input changes for city and price fields
   const handleChange = (e) => {
     setQuery((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  // Build the URL with query parameters for the list page
+  // Called when user calls the search button
   const buildListUrl = () => {
     const params = new URLSearchParams();
+
+    // Each if condition checks whether there is a value before appending or not
     if (query.type && query.type !== "any") {
       params.append("type", query.type);
     }
@@ -39,6 +47,7 @@ function SearchBar() {
     return `/list?${params.toString()}`;
   };
 
+  // Get translated label for each property type
   const getTypeLabel = (type) => {
     if (type === "any") return t("any");
     if (type === "buy") return t("buy");

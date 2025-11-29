@@ -1,10 +1,13 @@
+// Contact page: displays ways to reach the team and office location
 import { useContext } from "react";
 import { LanguageContext } from "../../../context/languageContext";
 import "./contactPage.scss";
 
 function ContactPage() {
+  // t(key) returns the translated text for the user's locale
   const { t } = useContext(LanguageContext);
 
+  // contactMethods is a configuration array which drives the contact cards UI
   const contactMethods = [
     {
       type: "email",
@@ -39,7 +42,8 @@ function ContactPage() {
       title: t("contactAddress"),
       primary: "Alexandria, Egypt",
       secondary: "Alexandria, Egypt",
-      action: "https://www.google.com/maps/place/Faculty+of+Engineering+-+University+of+Alexandria/@31.206247,29.9222472,17z/data=!3m1!4b1!4m6!3m5!1s0x14f5c38beb5b1711:0x39b32d42ccaf2a88!8m2!3d31.206247!4d29.9248221!16s%2Fm%2F03gs25d?entry=ttu&g_ep=EgoyMDI1MTEwMi4wIKXMDSoASAFQAw%3D%3D",
+      action:
+        "https://www.google.com/maps/place/Faculty+of+Engineering+-+University+of+Alexandria/@31.206247,29.9222472,17z/data=!3m1!4b1!4m6!3m5!1s0x14f5c38beb5b1711:0x39b32d42ccaf2a88!8m2!3d31.206247!4d29.9248221!16s%2Fm%2F03gs25d?entry=ttu&g_ep=EgoyMDI1MTEwMi4wIKXMDSoASAFQAw%3D%3D",
       color: "#EA4335",
     },
   ];
@@ -58,29 +62,44 @@ function ContactPage() {
 
       <div className="content">
         <div className="container">
+          {/* Render contact method cards based on contactMethods config */}
           <div className="contactMethods">
             {contactMethods.map((method, index) => (
               <a
                 key={method.type}
                 href={method.action}
-                target={method.type === "whatsapp" || method.type === "location" ? "_blank" : undefined}
-                rel={method.type === "whatsapp" || method.type === "location" ? "noopener noreferrer" : undefined}
+                target={
+                  method.type === "whatsapp" || method.type === "location"
+                    ? "_blank"
+                    : undefined
+                }
+                rel={
+                  method.type === "whatsapp" || method.type === "location"
+                    ? "noopener noreferrer"
+                    : undefined
+                }
                 className="contactCard"
                 style={{ "--card-color": method.color }}
               >
-                <div className="cardIcon" style={{ backgroundColor: `${method.color}15` }}>
+                <div
+                  className="cardIcon"
+                  style={{ backgroundColor: `${method.color}15` }}
+                >
                   <span>{method.icon}</span>
                 </div>
                 <div className="cardContent">
                   <h3>{method.title}</h3>
                   <p className="primaryText">{method.primary}</p>
-                  {method.secondary && <p className="secondaryText">{method.secondary}</p>}
+                  {method.secondary && (
+                    <p className="secondaryText">{method.secondary}</p>
+                  )}
                 </div>
                 <div className="cardArrow">→</div>
               </a>
             ))}
           </div>
 
+          {/* Working hours block: shows office schedule */}
           <div className="workingHoursSection">
             <div className="hoursCard">
               <div className="hoursIcon">🕒</div>
@@ -104,6 +123,7 @@ function ContactPage() {
             </div>
           </div>
 
+          {/* Map section: embedded Google Map and link to open in full maps */}
           <div className="mapSection">
             <div className="mapCard">
               <h2>{t("visitOurOffice")}</h2>
@@ -120,11 +140,14 @@ function ContactPage() {
                 ></iframe>
               </div>
               <div className="mapInfo">
-                <p>📍 {t("contactAddress")}:
-                  Alexandria, Egypt
-                </p>
+                <p>📍 {t("contactAddress")}: Alexandria, Egypt</p>
 
-                <a href="https://www.google.com/maps/place/Faculty+of+Engineering+-+University+of+Alexandria/@31.206247,29.9222472,17z/data=!3m1!4b1!4m6!3m5!1s0x14f5c38beb5b1711:0x39b32d42ccaf2a88!8m2!3d31.206247!4d29.9248221!16s%2Fm%2F03gs25d?entry=ttu&g_ep=EgoyMDI1MTEwMi4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" className="mapLink">
+                <a
+                  href="https://www.google.com/maps/place/Faculty+of+Engineering+-+University+of+Alexandria/@31.206247,29.9222472,17z/data=!3m1!4b1!4m6!3m5!1s0x14f5c38beb5b1711:0x39b32d42ccaf2a88!8m2!3d31.206247!4d29.9248221!16s%2Fm%2F03gs25d?entry=ttu&g_ep=EgoyMDI1MTEwMi4wIKXMDSoASAFQAw%3D%3D"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mapLink"
+                >
                   {t("openInGoogleMaps")} →
                 </a>
               </div>
@@ -137,4 +160,3 @@ function ContactPage() {
 }
 
 export default ContactPage;
-

@@ -30,8 +30,8 @@
         padding: 20px;
         border-radius: 5px;
         border: none;
-        background-color: teal;
-        color: white;
+        background-color: var(--accent);
+        color: var(--text-inverse);
         font-weight: bold;
         cursor: pointer;
       }
@@ -40,7 +40,7 @@
 
   .sideContainer {
     flex: 2;
-    background-color: #fcf5f3;
+    background-color: var(--bg-secondary);
     display: flex;
     flex-direction: column;
     gap: 20px;

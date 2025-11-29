@@ -165,18 +165,18 @@
 
           &.editBtn {
             &:hover {
-              background: #3498db;
-              border-color: #3498db;
-              color: white;
+              background: var(--info);
+              border-color: var(--info);
+              color: var(--text-inverse);
               transform: scale(1.1);
             }
           }
 
           &.deleteBtn {
             &:hover {
-              background: #e74c3c;
-              border-color: #e74c3c;
-              color: white;
+              background: var(--danger);
+              border-color: var(--danger);
+              color: var(--text-inverse);
               transform: scale(1.1);
             }
           }

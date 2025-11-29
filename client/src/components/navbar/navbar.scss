@@ -1,7 +1,7 @@
 @import "../../responsive.scss";
 
 nav {
-  height: 100px;
+  height: var(--nav-height);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -15,6 +15,20 @@ nav {
   top: 0;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
+
+  &.scrolled {
+    background: var(--nav-bg-scrolled);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(10px);
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+    opacity: 0.92;
+
+    @include sm {
+      /* keep normal background on small screens where menu overlays */
+      background: var(--bg-primary);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+    }
+  }
 
   a {
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -131,32 +145,30 @@ nav {
         font-weight: 700;
         transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         position: relative;
-        overflow: hidden;
+        /* allow the notification badge to overflow the profile button */
+        overflow: visible;
 
+        /* remove expanding overlay so icon/text remains visible on hover */
         &::before {
-          content: "";
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 0;
-          height: 0;
-          border-radius: 50%;
-          // background: var(--primary-color);
-          transform: translate(-50%, -50%);
-          transition: width 0.4s, height 0.4s;
-          z-index: 0;
+          display: none;
         }
 
         &:hover {
           border-color: var(--primary-color);
-          transform: translateY(-2px) scale(1.05);
-          box-shadow: 0 4px 12px rgba(254, 206, 81, 0.3);
-          // color: var(--text-inverse);
+          transform: translateY(-2px) scale(1.02);
+          box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.18);
 
-          &::before {
-            width: 200px;
-            height: 200px;
-          }
+          /* no overlay expansion here */
+        }
+
+        /* Ensure icon/emoji/text color does not change on hover */
+        &:hover,
+        &:focus {
+          color: inherit !important;
+        }
+
+        img {
+          transition: filter 0.2s ease, opacity 0.2s ease;
         }
       }
 
@@ -199,19 +211,24 @@ nav {
         border-radius: 10px;
         transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         font-weight: 600;
-        overflow: hidden;
+        /* allow the notification badge to overflow the profile button */
+        overflow: visible;
         
         &::before {
+          /* inset overlay that scales from center but stays inside the button bounds */
           content: "";
           position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 0;
-          height: 0;
-          border-radius: 50%;
-          background: rgba(255, 255, 255, 0.2);
-          transform: translate(-50%, -50%);
-          transition: width 0.4s, height 0.4s;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          border-radius: inherit;
+          background: rgba(255, 255, 255, 0.12);
+          transform: scale(0);
+          transform-origin: center center;
+          transition: transform 0.22s cubic-bezier(0.2,0.8,0.2,1);
+          pointer-events: none; /* don't block clicks */
+          z-index: 0;
         }
         
         &:hover {
@@ -219,9 +236,15 @@ nav {
           box-shadow: 0 8px 20px rgba(254, 206, 81, 0.4);
 
           &::before {
-            width: 300px;
-            height: 300px;
+            /* scale to fill the button area but remain contained */
+            transform: scale(1);
           }
+
+        /* ensure the label/text sits above the overlay */
+        & > span {
+          position: relative;
+          z-index: 1;
+        }
         }
         
         .notification{
@@ -238,6 +261,9 @@ nav {
           justify-content: center;
           font-size: 12px;
           font-weight: bold;
+          /* ensure the badge sits above pseudo-elements and other navbar layers */
+          z-index: 2000;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.2);
         }
 
       }
@@ -361,31 +387,15 @@ nav {
           overflow: hidden;
           min-width: 80px;
 
-          &::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: var(--primary-color);
-            transform: translate(-50%, -50%);
-            transition: width 0.4s, height 0.4s;
-            z-index: 0;
-          }
+          /* remove expanding overlay so icon/text remains visible on hover */
+          &::before { display: none; }
 
           &:hover {
             border-color: var(--primary-color);
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 4px 15px rgba(254, 206, 81, 0.3);
-            color: var(--text-inverse);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 4px 15px rgba(254, 206, 81, 0.2);
             z-index: 1;
-
-            &::before {
-              width: 200px;
-              height: 200px;
-            }
+            color: inherit !important;
           }
 
           &:active {
@@ -474,6 +484,19 @@ nav {
         }
       }
     }
+  }
+}
+@media (min-width: 739px) {
+  nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 1100;
+  }
+
+  body {
+    padding-top: var(--nav-height);
   }
 }
 

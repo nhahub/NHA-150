@@ -1,12 +1,17 @@
+// this file defines a Cloudinary upload widget component
+// imports
 import { useEffect, useRef } from 'react';
 
+// UploadWidget component definition
 const uploadWidget = ({ uwConfig, setPublicId, setState }) => {
   const uploadWidgetRef = useRef(null);
   const uploadButtonRef = useRef(null);
 
+  // Effect to initialize Cloudinary upload widget
   useEffect(() => {
     let unmounted = false;
 
+    // Function to load Cloudinary script
     const loadScript = () =>
       new Promise((resolve, reject) => {
         if (window.cloudinary) return resolve();
@@ -18,6 +23,7 @@ const uploadWidget = ({ uwConfig, setPublicId, setState }) => {
         document.head.appendChild(s);
       });
 
+    // Function to initialize the upload widget
     const initializeUploadWidget = async () => {
       try {
         await loadScript();
@@ -33,6 +39,7 @@ const uploadWidget = ({ uwConfig, setPublicId, setState }) => {
 
       if (!uploadButtonRef.current) return;
 
+      // Create the upload widget
       uploadWidgetRef.current = window.cloudinary.createUploadWidget(
         uwConfig,
         (error, result) => {
@@ -47,6 +54,7 @@ const uploadWidget = ({ uwConfig, setPublicId, setState }) => {
         }
       );
 
+      // Handle upload button click
       const handleUploadClick = () => {
         if (uploadWidgetRef.current) {
           uploadWidgetRef.current.open();
@@ -56,6 +64,7 @@ const uploadWidget = ({ uwConfig, setPublicId, setState }) => {
       const buttonElement = uploadButtonRef.current;
       buttonElement.addEventListener('click', handleUploadClick);
 
+      
       return () => {
         unmounted = true;
         buttonElement.removeEventListener('click', handleUploadClick);

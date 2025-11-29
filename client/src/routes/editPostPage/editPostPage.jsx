@@ -8,14 +8,14 @@ import { useNavigate, useParams, useLoaderData } from "react-router-dom";
 import { LanguageContext } from '../../../context/languageContext';
 
 function EditPostPage() {
-  const post = useLoaderData();
-  const { id } = useParams();
-  const [value, setValue] = useState(post.postDetail?.desc || "");
-  const [error, setError] = useState("");
-  const [imgs, setImgs] = useState(post.images || []);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const navigate = useNavigate();
-  const { t } = useContext(LanguageContext);
+  const post = useLoaderData(); // Load existing post data
+  const { id } = useParams();   // Get the post ID from URL parameters
+  const [value, setValue] = useState(post.postDetail?.desc || "");  // State for rich text editor content
+  const [error, setError] = useState(""); // State for error messages
+  const [imgs, setImgs] = useState(post.images || []); // State for uploaded images
+  const [isSubmitting, setIsSubmitting] = useState(false); // State for submission status
+  const navigate = useNavigate();   // Hook for navigation
+  const { t } = useContext(LanguageContext); // Get translation function from LanguageContext
 
   useEffect(() => {
     if (post.postDetail?.desc) {
@@ -24,7 +24,7 @@ function EditPostPage() {
     if (post.images) {
       setImgs(post.images);
     }
-  }, [post]);
+  }, [post]); // Initialize states when post data changes
 
   const modules = useMemo(() => ({
     toolbar: [
@@ -33,12 +33,12 @@ function EditPostPage() {
       [{ list: "ordered" }, { list: "bullet" }],
       ["link", "image"],
     ],
-  }), []);
+  }), []); // Quill editor modules configuration
 
   const formats = useMemo(() => [
     "header", "bold", "italic", "underline",
     "list", "bullet", "link", "image"
-  ], []);
+  ], []); // Quill editor formats configuration
 
   const memoUwConfig = useMemo(() => ({
     cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || "dog8lzbc4",
@@ -47,16 +47,16 @@ function EditPostPage() {
     multiple: true,
     folder: "posts",
     sources: ["local", "url", "camera"],
-  }), []);
+  }), []); // Memoized upload widget configuration
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setIsSubmitting(true);
-    
+      // Get form data
     const formData = new FormData(e.target);
     const inputs = Object.fromEntries(formData);
-
+      // Prepare and send API request
     try {
       const res = await apiRequest.put(`/posts/${id}`, {
         postData: {
@@ -72,7 +72,7 @@ function EditPostPage() {
           property: inputs.property || post.property,
           // Always send the current imgs array (allow empty -> deletes all images)
           images: imgs,
-        },
+        }, // Basic post data
         postDetail: {
           desc: value || post.postDetail?.desc,
           utilities: inputs.utilities || post.postDetail?.utilities,
@@ -82,7 +82,7 @@ function EditPostPage() {
           school: parseInt(inputs.school) || post.postDetail?.school,
           bus: parseInt(inputs.bus) || post.postDetail?.bus,
           restaurant: parseInt(inputs.restaurant) || post.postDetail?.restaurant,
-        }
+        } // Updated post detail
       });
       navigate("/" + id);
       console.log("Post updated:", res.data);
@@ -91,7 +91,7 @@ function EditPostPage() {
       setError(err.response?.data?.error || err.message || "Failed to update post");
       setIsSubmitting(false);
     }
-  };
+  }; // Handle form submission
 
   return (
     <div className="newPostPage">

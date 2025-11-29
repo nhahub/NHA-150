@@ -1,19 +1,25 @@
 import { useContext, Suspense } from "react";
 import { LanguageContext } from "../../../context/languageContext";
 import { useLoaderData, Await, useNavigate } from "react-router-dom";
+import { SpinnerDotted } from 'spinners-react';
+
 import "./agentsPage.scss";
 
 function AgentsPage() {
   const { t, language } = useContext(LanguageContext);
+
+  // Load agents data from route
   const data = useLoaderData();
   const navigate = useNavigate();
 
+  // Navigate to agent's property listings when profile is clicked
   const handleViewProfile = (agentId) => {
     navigate(`/list?userID=${agentId}`);
   };
 
   return (
     <div className="agentsPage">
+      {/* Hero section with page title and description */}
       <div className="hero">
         <div className="container">
           <h1 className="title">{t("agentsTitle")}</h1>
@@ -24,7 +30,8 @@ function AgentsPage() {
 
       <div className="content">
         <div className="container">
-          <Suspense fallback={<div className="loading">Loading agents...</div>}>
+          {/* Show spinner while data is loading */}
+          <Suspense fallback={<div className="loading"><SpinnerDotted  size={50}  thickness={150} speed={200} color="#F5803C"/></div>}>
             <Await resolve={data.agentsResponse} errorElement={<p>Error loading agents.</p>}>
               {(agentsResponse) => {
                 const agents = agentsResponse?.data || [];
@@ -56,6 +63,7 @@ function AgentsPage() {
                             <div className="detailItem">
                               <strong>{t("specialties")}:</strong>
                               <span>
+                                {/* Show Arabic specialties if language is Arabic, otherwise English */}
                                 {language === "ar"
                                   ? agent.specialtiesAr?.join(", ") || agent.specialties?.join(", ")
                                   : agent.specialties?.join(", ") || ""}
@@ -64,6 +72,7 @@ function AgentsPage() {
                             <div className="detailItem">
                               <strong>{t("languages")}:</strong>
                               <span>
+                                {/* Show Arabic languages if language is Arabic, otherwise English */}
                                 {language === "ar"
                                   ? agent.languagesAr?.join(", ") || agent.languages?.join(", ")
                                   : agent.languages?.join(", ") || ""}
@@ -90,4 +99,3 @@ function AgentsPage() {
 }
 
 export default AgentsPage;
-

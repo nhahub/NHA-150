@@ -9,12 +9,12 @@ import { LanguageContext } from '../../../context/languageContext';
 
 function NewPostPage() {
   const { t } = useContext(LanguageContext);
-  const [value,setValue]=useState("");
-  const [error,setError]=useState("");
-  const [imgs,setImgs]=useState([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const navigate = useNavigate();
-  const renderRef = useRef(0);
+  const [value,setValue]=useState(""); // State to manage rich text editor content
+  const [error,setError]=useState(""); // State to manage error messages
+  const [imgs,setImgs]=useState([]); // State to manage uploaded images
+  const [isSubmitting, setIsSubmitting] = useState(false); // State to manage submission status
+  const navigate = useNavigate(); 
+  const renderRef = useRef(0); // Ref to track component renders
   renderRef.current += 1;
 
   const modules = useMemo(() => ({
@@ -26,12 +26,12 @@ function NewPostPage() {
       ["link", "image"],
       ["clean"],
     ],
-  }), []);
+  }), []); // Quill editor modules configuration
 
   const formats = useMemo(() => [
     "header", "bold", "italic", "underline", "strike",
     "list", "bullet", "align", "link", "image"
-  ], []);
+  ], []); // Quill editor formats configuration
 
   const memoUwConfig = useMemo(()=>({
     cloudName: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || "dog8lzbc4",
@@ -40,19 +40,19 @@ function NewPostPage() {
     multiple: true,
     folder: "posts",
     sources: ["local", "url", "camera"],
-  }), []);
+  }), []); // Memoized upload widget configuration
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setIsSubmitting(true);
-    
+    // Get form data
     const formData=new FormData(e.target);
     const inputs=Object.fromEntries(formData);
-
+    // Prepare and send API request
     try{
       const res= await apiRequest.post("/posts",{
-        postData:{
+        postData:{ // Basic post data
           title:inputs.title || "",
           price:parseInt(inputs.price) || 0,
           address:inputs.address || "",
@@ -64,7 +64,7 @@ function NewPostPage() {
           type:inputs.type || "",
           property:inputs.property || "",
           images:imgs, 
-        },
+        }, // Always send the current imgs array (allow empty -> deletes all images)
         postDetail:{
           desc:value || "",
           utilities:inputs.utilities || "",
@@ -74,8 +74,8 @@ function NewPostPage() {
           school:parseInt(inputs.school) || 0,
           bus:parseInt(inputs.bus) || 0,
           restaurant:parseInt(inputs.restaurant) || 0,
-        }
-      });
+        } // Create new post detail
+      }); // Create new post
       navigate("/"+res.data.id);
       console.log("Post created:",res.data);
     }catch(err){
@@ -83,7 +83,7 @@ function NewPostPage() {
       setError(err.response?.data?.error || err.message || "Failed to create post");
       setIsSubmitting(false);
     }
-  }
+  } // Handle form submission
 
 
   return (
